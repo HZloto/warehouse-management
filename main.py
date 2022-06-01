@@ -48,10 +48,10 @@ class main_warehouse:
             
         Output
         ------
-        calls the function associated to the user request 
-        -> Breaks if request is 5 
+        Saves the changes in the local csv file
+        -> Returns the main menu function after displaying successful changes
         '''
-        
+        #Options menu
         print("============== ADD STOCK =============")
         print("Pick stock type:")
         print("(1) - Redwood")
@@ -60,23 +60,45 @@ class main_warehouse:
         print("======================================")
         print("")
         stock_type = int(input("Stock type:  "))
+        
+        #Check input validity
+        if stock_type == 1 or stock_type == 2 or stock_type == 3:
+            pass
+        else:
+            print("ERROR: Please enter a valid stock type (1, 2 or 3).")
+            time.sleep(2)
+            main_warehouse().add_stock()
+            
         print("")
         print("======================================")
         print("")
-        stock_quantity = int(input("Quantity:  "))
+        stock_quantity = int(input("Quantity to add:  "))
+        
+        #Check input validity
+        if stock_quantity > 0 :
+            pass   
+        else:
+            print("ERROR: Please enter a valid quantity.")
+            time.sleep(2)
+            main_warehouse().add_stock()
+            
         print("")
         print("======================================")
 
+        #Dict storing the references
         stocktypedict = {1 :'Redwood', 
                      2: 'Maple', 
                      3: 'Oak' }
         
+        #Use .loc to find the corresponding cell, then add required quantity
         stock_df.loc[stock_df['Stock_type'] == stocktypedict[stock_type], "Quantity"] += stock_quantity
         
+        #Save the updated df to csv
         stock_df.to_csv("stock.csv", index = False)
         
+        #Display confirmation of execution then return to menu
         print("")
-        print(f'Successfully added {stock_quantity} pallets of {stocktypedict[stock_type]} to the stock')
+        print(f'Successfully added {stock_quantity} pallets of {stocktypedict[stock_type]} to the stock.')
         time.sleep(2)
         print("")
         print("======================================")
@@ -86,8 +108,86 @@ class main_warehouse:
         return main_warehouse().display_menu()
             
         
-    def remove_stock(self):
-        pass 
+    def remove_stock(self, stock_df = stock_df):
+        '''
+        Provides an interface to pick stock type to remove, and what quanitity
+                
+        Parameters
+        ----------
+            - stock_df: pandas DataFrame
+                table of all the stocks
+            
+        Output
+        ------
+        Saves the changes in the local csv file
+        -> Returns the main menu function after displaying successful changes
+        '''
+        #Options menu
+        print("============ REMOVE STOCK ============")
+        print("Pick stock type:")
+        print("(1) - Redwood")
+        print("(2) - Maple")
+        print("(3) - Oak")
+        print("======================================")
+        print("")
+        stock_type = int(input("Stock type:  "))
+        
+        #Check input validity
+        if stock_type == 1 or stock_type == 2 or stock_type == 3:
+            pass
+        else:
+            print("ERROR: Please enter a valid stock type (1, 2 or 3).")
+            time.sleep(2)
+            main_warehouse().remove_stock()
+        
+        print("")
+        print("======================================")
+        print("")
+        stock_quantity = int(input("Quantity to remove:  "))
+        
+        #Check input validity
+        if stock_quantity > 0 :
+            pass   
+        else:
+            print("ERROR: Please enter a valid quantity.")
+            time.sleep(2)
+            main_warehouse().remove_stock()
+        
+        print("")
+        print("======================================")
+
+        #Dict storing the references
+        stocktypedict = {1 :'Redwood', 
+                     2: 'Maple', 
+                     3: 'Oak' }
+        
+        #Use .loc to find the corresponding cell, then remove required quantity
+        stock_df.loc[stock_df['Stock_type'] == stocktypedict[stock_type], "Quantity"] -= stock_quantity
+        
+        #Save the updated df to csv
+        stock_df.to_csv("stock.csv", index = False)
+        
+        #Get remaining stock
+        remaining_stock = int(stock_df.loc[stock_df['Stock_type'] == stocktypedict[stock_type], "Quantity"])
+        
+        if remaining_stock >= 0:
+        #Display confirmation of execution and remaining stock then return to menu
+            print("")
+            print(f'Successfully removed {stock_quantity} pallets of {stocktypedict[stock_type]} to the stock.')
+            print(f'{remaining_stock} pallet(s) of {stocktypedict[stock_type]} are left in the stock.')
+            time.sleep(2)
+            print("")
+            print("======================================")
+            print("Returning to menu...")
+            time.sleep(1)
+            
+            return main_warehouse().display_menu()
+        else:
+        #Display error message and call the remove function again
+            print("")
+            print("ERROR: Stock cannot be negative. Please try again.")
+            time.sleep(2)
+            return main_warehouse().remove_stock()
     
     def exit_program(self):
         '''
