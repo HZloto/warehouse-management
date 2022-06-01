@@ -1,5 +1,6 @@
 #IMPORTS
 import pandas as pd
+import time
 
 
 class generic_stock:
@@ -23,8 +24,6 @@ class warehouse:
         self.address = address
         self.capacity = capacity
         
-
-    
     
 class main_warehouse:
     
@@ -36,9 +35,22 @@ class main_warehouse:
              
         
     def get_stock(self):
-        print("ok")
+        pass
       
     def add_stock(self, stock_df = stock_df):
+        '''
+        Provides an interface to pick stock type to add, and what quanitity
+                
+        Parameters
+        ----------
+            - stock_df: pandas DataFrame
+                table of all the stocks
+            
+        Output
+        ------
+        calls the function associated to the user request 
+        -> Breaks if request is 5 
+        '''
         
         print("============== ADD STOCK =============")
         print("Pick stock type:")
@@ -63,16 +75,24 @@ class main_warehouse:
         
         stock_df.to_csv("stock.csv", index = False)
         
+        print("")
+        print(f'Successfully added {stock_quantity} pallets of {stocktypedict[stock_type]} to the stock')
+        time.sleep(2)
+        print("")
+        print("======================================")
+        print("Returning to menu...")
+        time.sleep(1)
         
-        
-        
-        
-              
+        return main_warehouse().display_menu()
+            
         
     def remove_stock(self):
         pass 
     
     def exit_program(self):
+        '''
+        Calls python's exit function to leave the script.         
+        '''
         print("exiting program...")
         print("")
         exit()
@@ -88,7 +108,7 @@ class main_warehouse:
         -> Breaks if request is 5 
         '''
         
-        #Printed menu 
+        #Print menu 
         print("")
         print("===== APP 2022 WAREHOUSE MANAGER =====")
         print("======================================")
@@ -116,7 +136,7 @@ class main_warehouse:
         #Using request #, returns a call to the function
         return menu[request]() 
        
-        
+#Entry point      
 if __name__ == "__main__":
     main_warehouse().display_menu()
             
