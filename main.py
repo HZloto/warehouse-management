@@ -3,36 +3,36 @@ import pandas as pd
 import time
 import datetime
 
+
+
 class generic_stock:
     def __init__(self, unit_price, quantity, name):
         self.unit_price = unit_price
         self.quantity = quantity
         self.name = name 
-
-Redwood = generic_stock(80,0,"Redwood")
-Maple = generic_stock(100,0,'Maple')
-Oak = generic_stock(70,0,"Oak")    
-    
-class warehouse:
-    def __init__(self,address,capacity,):
-        self.address = address
-        self.capacity = capacity
         
-class main: 
     def add_stock(stock_type, quantity):
         stock_type.quantity += quantity
         
     def remove_stock(stock_type, quantity):
         stock_type.quantity -= quantity
     
-        
+
+
+Redwood = generic_stock(80,0,"Redwood")
+Maple = generic_stock(100,0,'Maple')
+Oak = generic_stock(70,0,"Oak")       
+      
     
 class main_warehouse:
     '''
     This class provides all the functionalities required to use the app.
     
     '''    
-
+    #Dict storing the references
+    stocktypedict = {1 : Redwood, 
+                        2 : Maple, 
+                        3 : Oak } 
       
     def add_stock(self):
         '''
@@ -80,18 +80,13 @@ class main_warehouse:
             
         print("")
         print("======================================")
-
-        #Dict storing the references
-        stocktypedict = {1 :Redwood, 
-                     2: Maple, 
-                     3: Oak }
         
         #Call add_stock
-        main.add_stock(stocktypedict[stock_type], stock_quantity)
+        generic_stock.add_stock(main_warehouse.stocktypedict[stock_type], stock_quantity)
         
         #Display confirmation of execution then return to menu
         print("")
-        print(f'Successfully added {stock_quantity} pallets of {stocktypedict[stock_type].name} to the stock.')
+        print(f'Successfully added {stock_quantity} pallets of {main_warehouse.stocktypedict[stock_type].name} to the stock.')
         time.sleep(2)
         print("")
         print("======================================")
@@ -112,10 +107,6 @@ class main_warehouse:
         Saves the changes in the local class memory
         -> Returns the main menu function after displaying successful changes
         '''
-        #Dict storing the references
-        stocktypedict = {1 : Redwood, 
-                         2 : Maple, 
-                         3 : Oak }
         
         #Options menu
         print("============ REMOVE STOCK ============")
@@ -140,9 +131,9 @@ class main_warehouse:
         print("")
         
         #Get remaining stock
-        remaining_stock = stocktypedict[stock_type].quantity
+        remaining_stock = main_warehouse.stocktypedict[stock_type].quantity
         
-        print(f"There are currently {remaining_stock} pallet(s) left of {stocktypedict[stock_type].name}. ")
+        print(f"There are currently {remaining_stock} pallet(s) left of {main_warehouse.stocktypedict[stock_type].name}. ")
         print('')
         stock_quantity = int(input("Quantity to remove:  "))
         
@@ -157,13 +148,13 @@ class main_warehouse:
         print("")
         print("======================================")
         
-        if stocktypedict[stock_type].quantity - stock_quantity >= 0:
+        if main_warehouse.stocktypedict[stock_type].quantity - stock_quantity >= 0:
         #Do the operation
-            stocktypedict[stock_type].quantity -= stock_quantity
+            generic_stock.remove_stock(main_warehouse.stocktypedict[stock_type],stock_quantity)
         #Display confirmation of execution and remaining stock then return to menu
             print("")
-            print(f'Successfully removed {stock_quantity} pallets of {stocktypedict[stock_type].name} to the stock.')
-            print(f'{stocktypedict[stock_type].quantity} pallet(s) of {stocktypedict[stock_type].name} are left in the stock.')
+            print(f'Successfully removed {stock_quantity} pallets of {main_warehouse.stocktypedict[stock_type].name} to the stock.')
+            print(f'{main_warehouse.stocktypedict[stock_type].quantity} pallet(s) of {main_warehouse.stocktypedict[stock_type].name} are left in the stock.')
             time.sleep(2)
             print("")
             print("======================================")
@@ -189,10 +180,6 @@ class main_warehouse:
         Prints a statement with the quantity of a stock available
     
         '''  
-        #Dict storing the references
-        stocktypedict = {1 : Redwood, 
-                         2 : Maple, 
-                         3 : Oak }
         
         #Options menu
         print("========== INDIVIDUAL REPORT =========")
@@ -215,15 +202,15 @@ class main_warehouse:
         #Visuals and print of today's date    
         print("")
         print("======================================")
-        print(f"{str(stocktypedict[stock_type].name).upper()} REPORT:")
+        print(f"{str(main_warehouse.stocktypedict[stock_type].name).upper()} REPORT:")
         today = datetime.date.today()
         print(f"As of {today},")
         
         #Get remaining stock
-        remaining_stock = stocktypedict[stock_type].quantity
+        remaining_stock = main_warehouse.stocktypedict[stock_type].quantity
         
         #Use the remaining_stock variable and the user input to write the sentence
-        print(f"{remaining_stock} pallet(s) of {stocktypedict[stock_type].name} worth {stocktypedict[stock_type].unit_price*remaining_stock}€ are left in the stock. ")
+        print(f"{remaining_stock} pallet(s) of {main_warehouse.stocktypedict[stock_type].name} worth {main_warehouse.stocktypedict[stock_type].unit_price*remaining_stock}€ are left in the stock. ")
         
         print("======================================")
         
@@ -242,10 +229,6 @@ class main_warehouse:
         Prints inventory report
         -> optionally saves a txt file.
         '''
-        #Dict storing the references
-        stocktypedict = {1 : Redwood, 
-                         2 : Maple, 
-                         3 : Oak }
          
         #show options
         print("========== INVENTORY REPORT ==========")
@@ -263,9 +246,9 @@ class main_warehouse:
         #Iterate thorugh stock types, print their remaining stock 
         #and saving the sentences in our list for the .txt export
         
-        for i in stocktypedict:
-            remaining_stock = stocktypedict[i].quantity
-            indiv_stock = f"{remaining_stock} pallets of {stocktypedict[i].name} worth {remaining_stock*stocktypedict[i].unit_price}€"
+        for i in main_warehouse.stocktypedict:
+            remaining_stock = main_warehouse.stocktypedict[i].quantity
+            indiv_stock = f"{remaining_stock} pallets of {main_warehouse.stocktypedict[i].name} worth {remaining_stock*main_warehouse.stocktypedict[i].unit_price}€"
             indiv_list.append(indiv_stock)
             print(indiv_stock)
         print("======================================")
