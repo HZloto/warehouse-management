@@ -19,9 +19,9 @@ class generic_stock:
     
 
 
-Redwood = generic_stock(80,0,"Redwood")
-Maple = generic_stock(100,0,'Maple')
-Oak = generic_stock(70,0,"Oak")       
+Redwood = generic_stock(unit_price = 80, quantity = 0, name = "Redwood")
+Maple = generic_stock(unit_price = 100, quantity = 0, name = 'Maple')
+Oak = generic_stock(unit_price = 70, quantity = 0, name = "Oak")       
       
     
 class main_warehouse:
@@ -33,6 +33,23 @@ class main_warehouse:
     stocktypedict = {1 : Redwood, 
                         2 : Maple, 
                         3 : Oak } 
+    
+    def input_check(input):
+        '''
+        ensures that user input is a integer
+        
+        '''
+        
+        try:
+            input = int(input)
+            input in [1,2,3,4,5]
+        except:
+            print (("ERROR: Please enter a valid input."))
+            print("")
+            time.sleep(1)
+            main_warehouse().add_stock()
+        
+        
       
     def add_stock(self):
         '''
@@ -53,19 +70,13 @@ class main_warehouse:
         print("(3) - Oak")
         print("======================================")
         print("")
-        stock_type = int(input("Stock type:  "))
-        
-        #Check input validity
-        if stock_type == 1 or stock_type == 2 or stock_type == 3:
-            pass
-        else:
-            print("ERROR: Please enter a valid stock type (1, 2 or 3).")
-            time.sleep(2)
-            main_warehouse().add_stock()
-            
+        stock_type = input("Stock type:  ")    
         print("")
         print("======================================")
         print("")
+        
+        #Check input validity
+        main_warehouse.input_check(stock_type)
         
         #User inputs the quantity he/she wishes to add
         stock_quantity = int(input("Quantity to add:  "))
@@ -117,18 +128,12 @@ class main_warehouse:
         print("======================================")
         print("")
         stock_type = int(input("Stock type:  "))
-        
-        #Check input validity
-        if stock_type == 1 or stock_type == 2 or stock_type == 3:
-            pass
-        else:
-            print("ERROR: Please enter a valid stock type (1, 2 or 3).")
-            time.sleep(2)
-            main_warehouse().remove_stock()
-        
         print("")
         print("======================================")
         print("")
+        
+        #Check input validity
+        main_warehouse.input_check(stock_type)
         
         #Get remaining stock
         remaining_stock = main_warehouse.stocktypedict[stock_type].quantity
@@ -192,12 +197,7 @@ class main_warehouse:
         stock_type = int(input("Stock type:  "))
         
         #Check input validity
-        if stock_type == 1 or stock_type == 2 or stock_type == 3:
-            pass
-        else:
-            print("ERROR: Please enter a valid stock type (1, 2 or 3).")
-            time.sleep(2)
-            main_warehouse().add_stock()
+        main_warehouse.input_check(stock_type)
         
         #Visuals and print of today's date    
         print("")
@@ -308,10 +308,19 @@ class main_warehouse:
         print("(5) - Exit")
         print("======================================")
         print("")
-        request = int(input("Input request:  "))
+        request = input("Input request:  ") 
         print("")
         print("======================================")
         print("")
+        
+        #Check input
+        try:
+            request = int(request)
+            request in range(1,5)
+        except:
+            print("Invalid character. Please pick a menu item between 1-5.")
+            time.sleep(1)
+            main_warehouse().display_menu()
         
         #Dictionnary with references to all menu items
         menu = {1: self.add_stock,
@@ -325,6 +334,4 @@ class main_warehouse:
        
 #Entry point      
 if __name__ == "__main__":
-    main_warehouse().display_menu()
-            
-        
+    main_warehouse().display_menu()    
