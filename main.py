@@ -3,37 +3,28 @@ import pandas as pd
 import time
 import datetime
 
-#Import the csv file to store the inventory values
-try:
-    stock_df = pd.read_csv("stock.csv")
-    
-#If the file doesn't exist, we create it 
-except:
-    data = {'Stock_type': ['Redwood', 'Maple', 'Oak'], 'Quantity': [0, 0, 0]}  
-    stock_df = pd.DataFrame(data)
-
-
-
 class generic_stock:
-    def __init__(self, unit_price, quantity):
+    def __init__(self, unit_price, quantity, name):
         self.unit_price = unit_price
         self.quantity = quantity
-    pass
-    
-class stock1(generic_stock):
-    pass
+        self.name = name 
 
-class stock2(generic_stock):
-    pass
-
-class stock3(generic_stock):
-    pass
-    
+Redwood = generic_stock(80,0,"Redwood")
+Maple = generic_stock(100,0,'Maple')
+Oak = generic_stock(70,0,"Oak")    
     
 class warehouse:
     def __init__(self,address,capacity,):
         self.address = address
         self.capacity = capacity
+        
+class main: 
+    def add_stock(stock_type, quantity):
+        stock_type.quantity += quantity
+        
+    def remove_stock(stock_type, quantity):
+        stock_type.quantity -= quantity
+    
         
     
 class main_warehouse:
@@ -43,18 +34,13 @@ class main_warehouse:
     '''    
 
       
-    def add_stock(self, stock_df = stock_df):
+    def add_stock(self):
         '''
         Provides an interface to pick stock type to add, and what quanitity.
-                
-        Parameters
-        ----------
-            - stock_df: pandas DataFrame
-                table of all the stocks
-            
+    
         Output
         ------
-        Saves the changes in the local csv file
+        Saves the changes in the local class memory
         -> Returns the main menu function after displaying successful changes
         '''
         
@@ -96,19 +82,16 @@ class main_warehouse:
         print("======================================")
 
         #Dict storing the references
-        stocktypedict = {1 :'Redwood', 
-                     2: 'Maple', 
-                     3: 'Oak' }
+        stocktypedict = {1 :Redwood, 
+                     2: Maple, 
+                     3: Oak }
         
-        #Use .loc to find the corresponding cell, then add required quantity
-        stock_df.loc[stock_df['Stock_type'] == stocktypedict[stock_type], "Quantity"] += stock_quantity
-        
-        #Save the updated df to csv
-        stock_df.to_csv("stock.csv", index = False)
+        #Call add_stock
+        main.add_stock(stocktypedict[stock_type], stock_quantity)
         
         #Display confirmation of execution then return to menu
         print("")
-        print(f'Successfully added {stock_quantity} pallets of {stocktypedict[stock_type]} to the stock.')
+        print(f'Successfully added {stock_quantity} pallets of {stocktypedict[stock_type].name} to the stock.')
         time.sleep(2)
         print("")
         print("======================================")
@@ -120,24 +103,19 @@ class main_warehouse:
         
         
         
-    def remove_stock(self, stock_df = stock_df):
+    def remove_stock(self):
         '''
         Provides an interface to pick stock type to remove, and what quanitity
-                
-        Parameters
-        ----------
-            - stock_df: pandas DataFrame
-                table of all the stocks
             
         Output
         ------
-        Saves the changes in the local csv file
+        Saves the changes in the local class memory
         -> Returns the main menu function after displaying successful changes
         '''
         #Dict storing the references
-        stocktypedict = {1 :'Redwood', 
-                     2: 'Maple', 
-                     3: 'Oak' }
+        stocktypedict = {1 : Redwood, 
+                         2 : Maple, 
+                         3 : Oak }
         
         #Options menu
         print("============ REMOVE STOCK ============")
@@ -162,9 +140,9 @@ class main_warehouse:
         print("")
         
         #Get remaining stock
-        remaining_stock = int(stock_df.loc[stock_df['Stock_type'] == stocktypedict[stock_type], "Quantity"])
+        remaining_stock = stocktypedict[stock_type].quantity
         
-        print(f"There are currently {remaining_stock} pallet(s) left of {stocktypedict[stock_type]}. ")
+        print(f"There are currently {remaining_stock} pallet(s) left of {stocktypedict[stock_type].name}. ")
         print('')
         stock_quantity = int(input("Quantity to remove:  "))
         
@@ -179,18 +157,13 @@ class main_warehouse:
         print("")
         print("======================================")
         
-        #Use previously defined remaining_stock to remove required quantity to the cell of interest
-        remaining_stock -= stock_quantity
-        
-        #Save the updated df to csv
-        stock_df.to_csv("stock.csv", index = False)
-        
-        
-        if remaining_stock >= 0:
+        if stocktypedict[stock_type].quantity - stock_quantity >= 0:
+        #Do the operation
+            stocktypedict[stock_type].quantity -= stock_quantity
         #Display confirmation of execution and remaining stock then return to menu
             print("")
-            print(f'Successfully removed {stock_quantity} pallets of {stocktypedict[stock_type]} to the stock.')
-            print(f'{remaining_stock} pallet(s) of {stocktypedict[stock_type]} are left in the stock.')
+            print(f'Successfully removed {stock_quantity} pallets of {stocktypedict[stock_type].name} to the stock.')
+            print(f'{stocktypedict[stock_type].quantity} pallet(s) of {stocktypedict[stock_type].name} are left in the stock.')
             time.sleep(2)
             print("")
             print("======================================")
@@ -207,24 +180,19 @@ class main_warehouse:
         
         
         
-    def get_stock(self, stock_df = stock_df):
+    def get_stock(self):
         '''
         Lets the user get a report on an individual stock
-                
-        Parameters
-        ----------
-            - stock_df: pandas DataFrame
-                table of all the stocks
-            
+                  
         Output
         ------
         Prints a statement with the quantity of a stock available
     
         '''  
         #Dict storing the references
-        stocktypedict = {1 :'Redwood', 
-                     2: 'Maple', 
-                     3: 'Oak' }
+        stocktypedict = {1 : Redwood, 
+                         2 : Maple, 
+                         3 : Oak }
         
         #Options menu
         print("========== INDIVIDUAL REPORT =========")
@@ -247,15 +215,16 @@ class main_warehouse:
         #Visuals and print of today's date    
         print("")
         print("======================================")
-        print(f"{str(stocktypedict[stock_type]).upper()} REPORT:")
+        print(f"{str(stocktypedict[stock_type].name).upper()} REPORT:")
         today = datetime.date.today()
         print(f"As of {today},")
         
         #Get remaining stock
-        remaining_stock = int(stock_df.loc[stock_df['Stock_type'] == stocktypedict[stock_type], "Quantity"])
+        remaining_stock = stocktypedict[stock_type].quantity
         
         #Use the remaining_stock variable and the user input to write the sentence
-        print(f"{remaining_stock} pallet(s) of {stocktypedict[stock_type]} are left in the stock. ")
+        print(f"{remaining_stock} pallet(s) of {stocktypedict[stock_type].name} worth {stocktypedict[stock_type].unit_price*remaining_stock}€ are left in the stock. ")
+        
         print("======================================")
         
         #User need to press a button to come back to the menu
@@ -264,21 +233,19 @@ class main_warehouse:
         
         
         
-    def display_inventory(self, stock_df = stock_df):
+    def display_inventory(self):
         '''
         gives the user a full report of the inventory with the option to save the report as a .txt file
-                
-        Parameters
-        ----------
-            - stock_df: pandas DataFrame
-                table of all the stocks
             
         Output
         ------
         Prints inventory report
         -> optionally saves a txt file.
         '''
-        
+        #Dict storing the references
+        stocktypedict = {1 : Redwood, 
+                         2 : Maple, 
+                         3 : Oak }
          
         #show options
         print("========== INVENTORY REPORT ==========")
@@ -295,9 +262,10 @@ class main_warehouse:
         
         #Iterate thorugh stock types, print their remaining stock 
         #and saving the sentences in our list for the .txt export
-        for i in stock_df['Stock_type'].tolist():
-            remaining_stock = int(stock_df.loc[stock_df['Stock_type'] == str(i), "Quantity"])
-            indiv_stock = f"{remaining_stock} pallets of {i}"
+        
+        for i in stocktypedict:
+            remaining_stock = stocktypedict[i].quantity
+            indiv_stock = f"{remaining_stock} pallets of {stocktypedict[i].name} worth {remaining_stock*stocktypedict[i].unit_price}€"
             indiv_list.append(indiv_stock)
             print(indiv_stock)
         print("======================================")
