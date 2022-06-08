@@ -43,6 +43,9 @@ class main_warehouse:
         try:
             input = int(input)
             input in [1,2,3,4,5]
+            return input
+            
+        
         except:
             print (("ERROR: Please enter a valid input."))
             print("")
@@ -93,11 +96,11 @@ class main_warehouse:
         print("======================================")
         
         #Call add_stock
-        generic_stock.add_stock(main_warehouse.stocktypedict[stock_type], stock_quantity)
+        generic_stock.add_stock(main_warehouse.stocktypedict[int(stock_type)], stock_quantity)
         
         #Display confirmation of execution then return to menu
         print("")
-        print(f'Successfully added {stock_quantity} pallets of {main_warehouse.stocktypedict[stock_type].name} to the stock.')
+        print(f'Successfully added {stock_quantity} pallets of {main_warehouse.stocktypedict[int(stock_type)].name} to the stock.')
         time.sleep(2)
         print("")
         print("======================================")
@@ -136,9 +139,9 @@ class main_warehouse:
         main_warehouse.input_check(stock_type)
         
         #Get remaining stock
-        remaining_stock = main_warehouse.stocktypedict[stock_type].quantity
+        remaining_stock = main_warehouse.stocktypedict[int(stock_type)].quantity
         
-        print(f"There are currently {remaining_stock} pallet(s) left of {main_warehouse.stocktypedict[stock_type].name}. ")
+        print(f"There are currently {remaining_stock} pallet(s) left of {main_warehouse.stocktypedict[int(stock_type)].name}. ")
         print('')
         stock_quantity = int(input("Quantity to remove:  "))
         
@@ -153,13 +156,13 @@ class main_warehouse:
         print("")
         print("======================================")
         
-        if main_warehouse.stocktypedict[stock_type].quantity - stock_quantity >= 0:
+        if main_warehouse.stocktypedict[int(stock_type)].quantity - stock_quantity >= 0:
         #Do the operation
             generic_stock.remove_stock(main_warehouse.stocktypedict[stock_type],stock_quantity)
         #Display confirmation of execution and remaining stock then return to menu
             print("")
-            print(f'Successfully removed {stock_quantity} pallets of {main_warehouse.stocktypedict[stock_type].name} to the stock.')
-            print(f'{main_warehouse.stocktypedict[stock_type].quantity} pallet(s) of {main_warehouse.stocktypedict[stock_type].name} are left in the stock.')
+            print(f'Successfully removed {stock_quantity} pallets of {main_warehouse.stocktypedict[int(stock_type)].name} to the stock.')
+            print(f'{main_warehouse.stocktypedict[stock_type].quantity} pallet(s) of {main_warehouse.stocktypedict[int(stock_type)].name} are left in the stock.')
             time.sleep(2)
             print("")
             print("======================================")
@@ -202,15 +205,15 @@ class main_warehouse:
         #Visuals and print of today's date    
         print("")
         print("======================================")
-        print(f"{str(main_warehouse.stocktypedict[stock_type].name).upper()} REPORT:")
+        print(f"{str(main_warehouse.stocktypedict[int(stock_type)].name).upper()} REPORT:")
         today = datetime.date.today()
         print(f"As of {today},")
         
         #Get remaining stock
-        remaining_stock = main_warehouse.stocktypedict[stock_type].quantity
+        remaining_stock = main_warehouse.stocktypedict[int(stock_type)].quantity
         
         #Use the remaining_stock variable and the user input to write the sentence
-        print(f"{remaining_stock} pallet(s) of {main_warehouse.stocktypedict[stock_type].name} worth {main_warehouse.stocktypedict[stock_type].unit_price*remaining_stock}€ are left in the stock. ")
+        print(f"{remaining_stock} pallet(s) of {main_warehouse.stocktypedict[int(stock_type)].name} worth {main_warehouse.stocktypedict[int(stock_type)].unit_price*remaining_stock}€ are left in the stock. ")
         
         print("======================================")
         
@@ -313,14 +316,9 @@ class main_warehouse:
         print("======================================")
         print("")
         
-        #Check input
-        try:
-            request = int(request)
-            request in range(1,5)
-        except:
-            print("Invalid character. Please pick a menu item between 1-5.")
-            time.sleep(1)
-            main_warehouse().display_menu()
+        
+        #Check input validity
+        main_warehouse.input_check(request)
         
         #Dictionnary with references to all menu items
         menu = {1: self.add_stock,
@@ -330,7 +328,7 @@ class main_warehouse:
                 5: self.exit_program} 
         
         #Using request #, returns a call to the function
-        return menu[request]() 
+        return menu[int(request)]() 
        
 #Entry point      
 if __name__ == "__main__":
