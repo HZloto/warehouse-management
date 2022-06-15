@@ -2,20 +2,23 @@
 import pandas as pd
 import time
 import datetime
+from typing import Callable 
 
 
 
 class generic_stock:
-    def __init__(self, unit_price, quantity, name):
+    def __init__(self, unit_price: int , quantity: int, name: str) -> None:
         self.unit_price = unit_price
         self.quantity = quantity
         self.name = name 
         
-    def add_stock(stock_type, quantity):
+    def add_stock(stock_type: str, quantity: int) -> int:
         stock_type.quantity += quantity
+        return stock_type.quantity
         
-    def remove_stock(stock_type, quantity):
+    def remove_stock(stock_type: str, quantity: int) -> int:
         stock_type.quantity -= quantity
+        return stock_type.quantity
     
 
 
@@ -34,7 +37,7 @@ class main_warehouse:
                         2 : Maple, 
                         3 : Oak } 
     
-    def input_check(input):
+    def input_check(input: int) -> None:
         '''
         ensures that user input is a integer
         
@@ -54,7 +57,7 @@ class main_warehouse:
         
         
       
-    def add_stock(self):
+    def add_stock(self) -> Callable:
         '''
         Provides an interface to pick stock type to add, and what quanitity.
     
@@ -112,7 +115,7 @@ class main_warehouse:
         
         
         
-    def remove_stock(self):
+    def remove_stock(self) -> Callable:
         '''
         Provides an interface to pick stock type to remove, and what quanitity
             
@@ -179,7 +182,7 @@ class main_warehouse:
         
         
         
-    def get_stock(self):
+    def get_stock(self) -> Callable:
         '''
         Lets the user get a report on an individual stock
                   
@@ -223,7 +226,7 @@ class main_warehouse:
         
         
         
-    def display_inventory(self):
+    def display_inventory(self) -> Callable:
         '''
         gives the user a full report of the inventory with the option to save the report as a .txt file
             
@@ -279,7 +282,7 @@ class main_warehouse:
             return(main_warehouse().display_inventory())
          
     
-    def exit_program(self):
+    def exit_program(self) -> None:
         '''
         Calls python's exit function to leave the script.         
         '''
@@ -288,7 +291,7 @@ class main_warehouse:
         exit()
         
 
-    def display_menu(self):
+    def display_menu(self) -> Callable:
         '''
         Prints the different choices presented to the user and execute the function of the chosen path.
                 
