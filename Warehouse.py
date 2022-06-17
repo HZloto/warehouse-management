@@ -1,20 +1,23 @@
- 
+#IMPORTS
 import time
 import datetime
 from typing import Callable
 from Stock import Redwood, Maple, Oak
+
 
 class MainWarehouse:
     '''
     This class provides all the functionalities required to use the app.
     
     '''    
-    def __init__(self) -> None:
-        redwood = Redwood(80,0)
-        maple = Maple(100,0)
-        oak = Oak(70,0)
     
-        #Dict storing the references
+    def __init__(self) -> None:
+        #We create objects for our stock and define a unit price
+        redwood = Redwood(unit_price = 80, quantity = 0)
+        maple = Maple(unit_price = 100, quantity = 0)
+        oak = Oak(unit_price = 70, quantity = 0)
+    
+        #Dict storing the references of stock
         self.stocktypedict_ = {1 : redwood, 
                             2 : maple, 
                             3 : oak } 
