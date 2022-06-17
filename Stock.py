@@ -16,20 +16,34 @@ class GenericStock:
     def remove_stock(stock_type: str, quantity: int) -> None:
         stock_type.quantity -= quantity
         
+        
+        
 #Using class inheritance we define three stock types
 ## We add an additionnal attribute that is unique to each wood type
 
 class Redwood(GenericStock):
+    '''
+    This class defines the Redwood Stock
+    
+    '''
     def __init__(self, unit_price: int, quantity: int) -> None:
         super().__init__(unit_price, quantity, name = "Redwood")
         self.density_ = 5
         
 class Maple(GenericStock):
+    '''
+    This class defines the Maple Stock
+    
+    '''
     def __init__(self, unit_price: int, quantity: int) -> None:
         super().__init__(unit_price, quantity, name = "Maple")
         self.humidity_ = 10  
 
 class Oak(GenericStock):
+    '''
+    This class defines the Oak Stock
+    
+    '''
     def __init__(self, unit_price: int, quantity: int) -> None:
         super().__init__(unit_price, quantity, name = "Oak")
         self.varnish_ = "Bright"
