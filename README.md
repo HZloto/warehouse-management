@@ -1,6 +1,5 @@
 # warehouse-management
-<b>This Python script helps manage stock inventory for a woodworking company. It supports adding, removing, displaying and saving locally a report on stocks available in a warehouse.
-Functionalities</b>
+<b>This Python script helps manage stock inventory for a woodworking company. It supports adding, removing, displaying and saving a report on stocks available in a warehouse. The user has the possibility to request the state of the whole inventory or a stock in particular. </b>
 
 <h1>How to use</h1>
 
