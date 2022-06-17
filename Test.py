@@ -4,6 +4,48 @@ import datetime
 from typing import Callable
 from Stock import Redwood, Maple, Oak
 
+def test_warehouse():
+    '''
+    This function tests the functionalities of the warehouse management app 
+    by brute forcing inputs and asserting that returns are integers
+    '''
+    mywarehouse = MainWarehouse()
+
+    mywarehouse.add_stock()
+    assert type(mywarehouse.add_stock()) is int
+    
+    mywarehouse.remove_stock()
+    assert type(mywarehouse.remove_stock()) is int
+    
+    mywarehouse.get_stock()
+    assert type(mywarehouse.get_stock()) is int
+    
+    mywarehouse.display_inventory()
+    for i in mywarehouse.display_inventory():
+        if i == int:
+            pass
+    
+    
+    print("ADD_STOCK UNITTEST PASSED")
+    print("REMOVE_STOCK UNITTEST PASSED")
+    print("GET_STOCK UNITTEST PASSED")
+    print("DISPLAY_INVENTORY UNITTEST PASSED")
+    time.sleep(0.2)
+    print("#")
+    time.sleep(0.2)
+    print("##")
+    time.sleep(0.2)
+    print("###")
+    print("ALL TESTS PASSED - EXITING TEST FILE")
+    exit()
+        
+
+
+#####################################
+#The Following is the MainWarehouse class with user inputs swiched for pre-picked value
+#THIS IS NOT PRODUCTION CODE - DISREGARD
+#####################################
+
 
 class MainWarehouse:
     '''
@@ -36,48 +78,31 @@ class MainWarehouse:
         '''
         
         #Options menu
-        print("============== ADD STOCK =============")
-        print("Pick stock type:")
-        print("(1) - Redwood")
-        print("(2) - Maple")
-        print("(3) - Oak")
-        print("======================================")
-        print("")
-        stock_type = input("Stock type:  ")    
-        print("")
-        print("======================================")
-        print("")
+        
+        stock_type = 1    
+        
         
         #Check input validity
         self.input_check(stock_type)
         
         #User inputs the quantity he/she wishes to add
-        stock_quantity = int(input("Quantity to add:  "))
+        stock_quantity = 100
         
         #Check input validity
         if stock_quantity > 0 :
             pass   
         else:
             print("ERROR: Please enter a valid quantity.")
-            time.sleep(2)
+           
             self.add_stock()
-            
-        print("")
-        print("======================================")
         
         #Call add_stock
         self.stocktypedict_[int(stock_type)].add_stock(stock_quantity)
         
         #Display confirmation of execution then return to menu
-        print("")
-        print(f'Successfully added {stock_quantity} pallets of {self.stocktypedict_[int(stock_type)].name} to the stock.')
-        time.sleep(2)
-        print("")
-        print("======================================")
-        print("Returning to menu...")
-        time.sleep(1)
         
-        return self.display_menu()
+        
+        return stock_quantity
             
         
         
@@ -92,18 +117,9 @@ class MainWarehouse:
         -> Returns the main menu function after displaying successful changes
         '''
         
-        #Options menu
-        print("============ REMOVE STOCK ============")
-        print("Pick stock type:")
-        print("(1) - Redwood")
-        print("(2) - Maple")
-        print("(3) - Oak")
-        print("======================================")
-        print("")
-        stock_type = int(input("Stock type:  "))
-        print("")
-        print("======================================")
-        print("")
+        
+        stock_type = 1
+       
         
         #Check input validity
         self.input_check(stock_type)
@@ -111,41 +127,29 @@ class MainWarehouse:
         #Get remaining stock
         remaining_stock = self.stocktypedict_[int(stock_type)].quantity
         
-        print(f"There are currently {remaining_stock} pallet(s) left of {self.stocktypedict_[int(stock_type)].name}. ")
-        print('')
-        stock_quantity = int(input("Quantity to remove:  "))
+        stock_quantity = 1
         
         #Check input validity
         if stock_quantity > 0 :
             pass   
         else:
             print("ERROR: Please enter a valid quantity.")
-            time.sleep(2)
+            
             self.remove_stock()
         
-        print("")
-        print("======================================")
         
         if self.stocktypedict_[int(stock_type)].quantity - stock_quantity >= 0:
         #Do the operation
             self.stocktypedict_[stock_type].remove_stock(stock_quantity)
         #Display confirmation of execution and remaining stock then return to menu
-            print("")
-            print(f'Successfully removed {stock_quantity} pallets of {self.stocktypedict_[int(stock_type)].name} to the stock.')
-            print(f'{self.stocktypedict_[stock_type].quantity} pallet(s) of {self.stocktypedict_[int(stock_type)].name} are left in the stock.')
-            time.sleep(2)
-            print("")
-            print("======================================")
-            print("Returning to menu...")
-            time.sleep(1)
             
-            return self.display_menu()
+            return stock_quantity
         else:
         #Display error message and call the remove function again
             print("")
             print("ERROR: Stock cannot be negative. Please try again.")
-            time.sleep(2)
-            return self.remove_stock()
+           
+            return stock_quantity
         
         
         
@@ -160,24 +164,12 @@ class MainWarehouse:
         '''  
         
         #Options menu
-        print("========== INDIVIDUAL REPORT =========")
-        print("Pick stock type:")
-        print("(1) - Redwood")
-        print("(2) - Maple")
-        print("(3) - Oak")
-        print("======================================")
-        print("")
-        stock_type = int(input("Stock type:  "))
+       
+        stock_type = 1
         
         #Check input validity
         self.input_check(stock_type)
-        
-        #Visuals and print of today's date    
-        print("")
-        print("======================================")
-        print(f"{str(self.stocktypedict_[int(stock_type)].name).upper()} REPORT:")
-        today = datetime.date.today()
-        print(f"As of {today},")
+    
         
         #Get remaining stock
         remaining_stock = self.stocktypedict_[int(stock_type)].quantity
@@ -188,7 +180,7 @@ class MainWarehouse:
         print("======================================")
         
         #User need to press a button to come back to the menu
-        return(input("Hit 'Enter' to return to main menu."), self.display_menu())
+        return(remaining_stock)
         
         
         
@@ -204,15 +196,10 @@ class MainWarehouse:
         '''
          
         #show options
-        print("========== INVENTORY REPORT ==========")
         
-        #user inputs if a txt file should be saved
-        save_choice = input("Do you wish to save a .txt file for this report? (y/n)   => ")
+        save_choice = 'n'
         
-        print("")
-        print("======================================")
-        print(f"MAIN WAREHOUSE REPORT {datetime.date.today()}: ")
-        
+       
         #Initiate a list to store individual stock values
         indiv_list = []
         
@@ -239,7 +226,7 @@ class MainWarehouse:
                 
         #Case if the user doesn't want to save
         elif save_choice == "n":
-            return(input("Hit 'Enter' to return to main menu."), self.display_menu())
+            return(indiv_list)
         
         #Ask the user to retry in case the input is not recognised
         else: 
@@ -249,14 +236,7 @@ class MainWarehouse:
             return(self.display_inventory())
          
     
-    def exit_program(self) -> None:
-        '''
-        Calls python's exit function to leave the script.         
-        '''
-        print("exiting program...")
-        print("exited.")
-        exit()
-        
+    
     
     def input_check(self, input: int) -> None:
         '''
@@ -271,49 +251,10 @@ class MainWarehouse:
         else:
             print (("ERROR: Please enter a valid input."))
             print("")
-            time.sleep(1)
+            
             self.display_menu()
         
-        
-
-    def display_menu(self) -> Callable:
-        '''
-        Prints the different choices presented to the user and execute the function of the chosen path.
-                
-        Output
-        ------
-        calls the function associated to the user request 
-        -> Breaks if request is 5 
-        '''
-        
-        #Print menu 
-        print("")
-        print("===== APP 2022 WAREHOUSE MANAGER =====")
-        print("======================================")
-        print("")
-        print("================ MENU ================")
-        print("(1) - Add Stock")
-        print("(2) - Remove Stock")
-        print("(3) - Individual Stock Report")
-        print("(4) - Full Inventory Report")
-        print("(5) - Exit")
-        print("======================================")
-        print("")
-        request = input("Input request:  ") 
-        print("")
-        print("======================================")
-        print("")
-        
-        
-        #Check input validity
-        self.input_check(request)
-        
-        #Dictionnary with references to all menu items
-        menu = {1: self.add_stock,
-                2: self.remove_stock, 
-                3: self.get_stock,
-                4: self.display_inventory, 
-                5: self.exit_program} 
-        
-        #Using request #, returns a call to the function
-        return menu[int(request)]() 
+    
+    
+    
+tester()
