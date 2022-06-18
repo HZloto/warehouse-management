@@ -3,10 +3,10 @@
 
 <h1>How to use</h1>
 
-Make sure that Stock.py, Warehouse.py and main.py are in the same folder in you local OS. 
-Open your terminal to the location of the folder and type “python main.py”
-A menu will appear. Use the keypad to navigate (e.g. to add stock, input “1” in the Input Request box.
-When done, hit “5” on the main menu to exit the script. (NOTE: All inventory will be reset to 0 after exiting the app). 
+<li>Make sure that Stock.py, Warehouse.py and main.py are in the same folder in you local OS. 
+<li>Open your terminal to the location of the folder and type “python main.py”
+<li>A menu will appear. Use the keypad to navigate (e.g. to add stock, input “1” in the Input Request box.
+<li>When done, hit “5” on the main menu to exit the script. (NOTE: All inventory will be reset to 0 after exiting the app). 
 
 <h1>Design and architecture</h1>
 
