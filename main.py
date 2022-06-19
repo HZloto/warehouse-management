@@ -37,8 +37,6 @@ def warehouse_loader(choice: int = warehousemenu()) -> Callable:
     -> see Warehouse.py
     '''
     
-    
-    
     #Dict storing the strings for chosen warehouse
     loc_dict = {1: "Barcelona",
                 2:"Paris"}
@@ -52,6 +50,5 @@ def warehouse_loader(choice: int = warehousemenu()) -> Callable:
     loc_dict[choice] = MainWarehouse()
     return loc_dict[choice].display_menu()
     
-    
-
+#Call function    
 warehouse_loader()   
