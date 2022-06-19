@@ -3,6 +3,7 @@ import time
 import datetime
 from typing import Callable
 from Stock import Redwood, Maple, Oak
+import random 
 
 
 class MainWarehouse:
@@ -12,10 +13,10 @@ class MainWarehouse:
     '''    
     
     def __init__(self) -> None:
-        #We create objects for our stock and define a unit price
-        redwood = Redwood(unit_price = 80, quantity = 0)
-        maple = Maple(unit_price = 100, quantity = 0)
-        oak = Oak(unit_price = 70, quantity = 0)
+        #We create objects for our stock and define a unit price, random quantities
+        redwood = Redwood(unit_price = 80, quantity = random.randint(0, 2000))
+        maple = Maple(unit_price = 100, quantity = random.randint(0, 2000))
+        oak = Oak(unit_price = 70, quantity = random.randint(0, 2000))
     
         #Dict storing the references of stock
         self.stocktypedict_ = {1 : redwood, 
@@ -287,10 +288,7 @@ class MainWarehouse:
         '''
         
         #Print menu 
-        print("")
-        print("===== APP 2022 WAREHOUSE MANAGER =====")
-        print("======================================")
-        print("")
+        
         print("================ MENU ================")
         print("(1) - Add Stock")
         print("(2) - Remove Stock")
